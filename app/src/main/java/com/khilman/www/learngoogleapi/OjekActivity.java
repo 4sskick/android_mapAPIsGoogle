@@ -43,7 +43,7 @@ import retrofit2.Response;
 public class OjekActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
 
-    private String API_KEY = getResources().getString(R.string.google_maps_key);
+    private String API_KEY = null;
 
     public LatLng pickUpLatLng = null;
     public LatLng locationLatLng = null;
@@ -93,7 +93,7 @@ public class OjekActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     // method untuk inisialisasi Place agar lebih rapih
-    private void placeInit(){
+    private void placeInit() {
         if (!Places.isInitialized()) {
             Places.initialize(this, getString(R.string.google_maps_key));
         }
@@ -232,7 +232,7 @@ public class OjekActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Panggil Retrofit
         ApiServices api = InitLibrary.getInstance();
         // Siapkan request
-        Call<ResponseRoute> routeRequest = api.request_route(lokasiAwal, lokasiAkhir, API_KEY);
+        Call<ResponseRoute> routeRequest = api.request_route(lokasiAwal, lokasiAkhir, API_KEY == null ? getResources().getString(R.string.google_maps_key) : null);
         // kirim request
         routeRequest.enqueue(new Callback<ResponseRoute>() {
             @Override
