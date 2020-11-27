@@ -18,10 +18,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.khilman.www.learngoogleapi.network.ApiServices;
 import com.khilman.www.learngoogleapi.network.InitLibrary;
-import com.khilman.www.learngoogleapi.response.Distance;
-import com.khilman.www.learngoogleapi.response.Duration;
-import com.khilman.www.learngoogleapi.response.LegsItem;
-import com.khilman.www.learngoogleapi.response.ResponseRoute;
+import com.khilman.www.learngoogleapi.data.response.Distance;
+import com.khilman.www.learngoogleapi.data.response.Duration;
+import com.khilman.www.learngoogleapi.data.response.LegsItem;
+import com.khilman.www.learngoogleapi.data.response.ResponseRoute;
 
 import java.util.List;
 

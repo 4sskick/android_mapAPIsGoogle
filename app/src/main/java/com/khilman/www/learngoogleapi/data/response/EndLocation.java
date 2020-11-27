@@ -1,8 +1,8 @@
-package com.khilman.www.learngoogleapi.response;
+package com.khilman.www.learngoogleapi.data.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class StartLocation{
+public class EndLocation{
 
 	@SerializedName("lng")
 	private double lng;
@@ -29,7 +29,7 @@ public class StartLocation{
 	@Override
  	public String toString(){
 		return 
-			"StartLocation{" + 
+			"EndLocation{" + 
 			"lng = '" + lng + '\'' + 
 			",lat = '" + lat + '\'' + 
 			"}";

@@ -1,6 +1,6 @@
 package com.khilman.www.learngoogleapi.network;
 
-import com.khilman.www.learngoogleapi.response.ResponseRoute;
+import com.khilman.www.learngoogleapi.data.response.ResponseRoute;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,8 +1,8 @@
-package com.khilman.www.learngoogleapi.response;
+package com.khilman.www.learngoogleapi.data.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OverviewPolyline{
+public class Polyline{
 
 	@SerializedName("points")
 	private String points;
@@ -18,7 +18,7 @@ public class OverviewPolyline{
 	@Override
  	public String toString(){
 		return 
-			"OverviewPolyline{" + 
+			"Polyline{" + 
 			"points = '" + points + '\'' + 
 			"}";
 		}

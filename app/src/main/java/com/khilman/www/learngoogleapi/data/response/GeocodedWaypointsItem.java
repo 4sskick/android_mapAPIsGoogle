@@ -1,4 +1,4 @@
-package com.khilman.www.learngoogleapi.response;
+package com.khilman.www.learngoogleapi.data.response;
 
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
