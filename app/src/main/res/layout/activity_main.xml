@@ -5,18 +5,20 @@
     android:orientation="vertical">
 
     <Button
+        android:id="@+id/btn_placePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="openAutoPlace"
-        android:text="Place Auto Complete"/>
+        android:text="Place Auto Complete" />
+
     <Button
+        android:id="@+id/btn_direction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="openDirectionMap"
-        android:text="Maps Direction"/>
+        android:text="Maps Direction" />
+
     <Button
+        android:id="@+id/btn_ojek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="openOjek"
-        android:text="Ojek"/>
+        android:text="Ojek" />
 </LinearLayout>
