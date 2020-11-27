@@ -1,25 +1,16 @@
 package com.khilman.www.learngoogleapi;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,6 +20,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.maps.android.PolyUtil;
 import com.khilman.www.learngoogleapi.network.ApiServices;
 import com.khilman.www.learngoogleapi.network.InitLibrary;
@@ -37,6 +33,7 @@ import com.khilman.www.learngoogleapi.response.Duration;
 import com.khilman.www.learngoogleapi.response.LegsItem;
 import com.khilman.www.learngoogleapi.response.ResponseRoute;
 
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,7 +43,7 @@ import retrofit2.Response;
 public class OjekActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
 
-    private String API_KEY = "AIzaSyBe9P-itehQgH5BG7ox5vizpv5E1iGLMhg";
+    private String API_KEY = getResources().getString(R.string.google_maps_key);
 
     public LatLng pickUpLatLng = null;
     public LatLng locationLatLng = null;
@@ -70,6 +67,10 @@ public class OjekActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Inisialisasi Widget
         wigetInit();
+
+        // inisialisasi Place
+        placeInit();
+
         infoPanel.setVisibility(View.GONE);
         // Event OnClick
         tvPickUpFrom.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +90,13 @@ public class OjekActivity extends AppCompatActivity implements OnMapReadyCallbac
                 showPlaceAutoComplete(DEST_LOC);
             }
         });
+    }
 
-
+    // method untuk inisialisasi Place agar lebih rapih
+    private void placeInit(){
+        if (!Places.isInitialized()) {
+            Places.initialize(this, getString(R.string.google_maps_key));
+        }
     }
 
     // Method untuk Inisilisasi Widget agar lebih rapih
@@ -117,21 +123,41 @@ public class OjekActivity extends AppCompatActivity implements OnMapReadyCallbac
         REQUEST_CODE = typeLocation;
 
         // Filter hanya tmpat yg ada di Indonesia
-        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder().setCountry("ID").build();
-        try {
-            // Intent untuk mengirim Implisit Intent
-            Intent mIntent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                    .setFilter(typeFilter)
-                    .build(this);
-            // jalankan intent impilist
-            startActivityForResult(mIntent, REQUEST_CODE);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace(); // cetak error
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace(); // cetak error
-            // Display Toast
-            Toast.makeText(this, "Layanan Play Services Tidak Tersedia", Toast.LENGTH_SHORT).show();
-        }
+//        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder().setCountry("ID").build();
+//        try {
+//            // Intent untuk mengirim Implisit Intent
+//            Intent mIntent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+//                    .setFilter(typeFilter)
+//                    .build(this);
+//            // jalankan intent impilist
+//            startActivityForResult(mIntent, REQUEST_CODE);
+//        } catch (GooglePlayServicesRepairableException e) {
+//            e.printStackTrace(); // cetak error
+//        } catch (GooglePlayServicesNotAvailableException e) {
+//            e.printStackTrace(); // cetak error
+//            // Display Toast
+//            Toast.makeText(this, "Layanan Play Services Tidak Tersedia", Toast.LENGTH_SHORT).show();
+//        }
+
+        List<Place.Field> fields = Arrays.asList(
+                Place.Field.ID
+                , Place.Field.NAME
+                , Place.Field.ADDRESS
+                , Place.Field.LAT_LNG);
+
+        Intent mIntent = new Autocomplete
+                .IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                .setCountry("ID")
+                .setInitialQuery("monas")
+                .setLocationBias(RectangularBounds
+                        .newInstance(
+                                new LatLng(-6.260457557522209, 106.78625711420865)
+                                , new LatLng(-6.170694470907933, 106.8267691958792)
+                        )
+                )
+                .build(this);
+
+        startActivityForResult(mIntent, REQUEST_CODE);
 
     }
 
@@ -143,39 +169,42 @@ public class OjekActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (resultCode == RESULT_OK) {
             //Toast.makeText(this, "Sini Gaes2", Toast.LENGTH_SHORT).show();
             // Tampung Data tempat ke variable
-            Place placeData = PlaceAutocomplete.getPlace(this, data);
+//            Place placeData = PlaceAutocomplete.getPlace(this, data);
+//
+//            if (placeData.isDataValid()) {
 
-            if (placeData.isDataValid()) {
-                // Show in Log Cat
-                Log.d("autoCompletePlace Data", placeData.toString());
+            Place placeData = Autocomplete.getPlaceFromIntent(data);
 
-                // Dapatkan Detail
-                String placeAddress = placeData.getAddress().toString();
-                LatLng placeLatLng = placeData.getLatLng();
-                String placeName = placeData.getName().toString();
+            // Show in Log Cat
+            Log.d("autoCompletePlace Data", placeData.toString());
 
-                // Cek user milih titik jemput atau titik tujuan
-                switch (REQUEST_CODE) {
-                    case PICK_UP:
-                        // Set ke widget lokasi asal
-                        tvPickUpFrom.setText(placeAddress);
-                        pickUpLatLng = placeData.getLatLng();
-                        break;
-                    case DEST_LOC:
-                        // Set ke widget lokasi tujuan
-                        tvDestLocation.setText(placeAddress);
-                        locationLatLng = placeData.getLatLng();
-                        break;
-                }
-                // Jalankan Action Route
-                if (pickUpLatLng != null && locationLatLng != null) {
-                    actionRoute(placeLatLng, REQUEST_CODE);
-                }
+            // Dapatkan Detail
+            String placeAddress = placeData.getAddress().toString();
+            LatLng placeLatLng = placeData.getLatLng();
+            String placeName = placeData.getName().toString();
 
-            } else {
-                // Data tempat tidak valid
-                Toast.makeText(this, "Invalid Place !", Toast.LENGTH_SHORT).show();
+            // Cek user milih titik jemput atau titik tujuan
+            switch (REQUEST_CODE) {
+                case PICK_UP:
+                    // Set ke widget lokasi asal
+                    tvPickUpFrom.setText(placeAddress);
+                    pickUpLatLng = placeData.getLatLng();
+                    break;
+                case DEST_LOC:
+                    // Set ke widget lokasi tujuan
+                    tvDestLocation.setText(placeAddress);
+                    locationLatLng = placeData.getLatLng();
+                    break;
             }
+            // Jalankan Action Route
+            if (pickUpLatLng != null && locationLatLng != null) {
+                actionRoute(placeLatLng, REQUEST_CODE);
+            }
+
+//            } else {
+//                // Data tempat tidak valid
+//                Toast.makeText(this, "Invalid Place !", Toast.LENGTH_SHORT).show();
+//            }
         }
 
     }
@@ -209,7 +238,7 @@ public class OjekActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onResponse(Call<ResponseRoute> call, Response<ResponseRoute> response) {
 
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     // tampung response ke variable
                     ResponseRoute dataDirection = response.body();
 

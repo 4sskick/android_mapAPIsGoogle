@@ -6,8 +6,8 @@ android {
         applicationId "com.khilman.www.learngoogleapi"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 12
+        versionName "0.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -26,16 +26,17 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     // Google MAPS
-    implementation 'com.google.android.gms:play-services-maps:11.8.0'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
 
     // Auto Complete Place & location
-    implementation 'com.google.android.gms:play-services-places:11.8.0'
-    implementation 'com.google.android.gms:play-services-location:11.8.0'
+//    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.libraries.places:places:1.1.0'
 
     // Maps Utils
-    compile 'com.google.maps.android:android-maps-utils:0.4+'
+    implementation 'com.google.maps.android:android-maps-utils:0.4+'
 
     // Retrofit
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

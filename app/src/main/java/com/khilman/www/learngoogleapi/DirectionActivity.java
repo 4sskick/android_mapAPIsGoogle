@@ -3,6 +3,7 @@ package com.khilman.www.learngoogleapi;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -31,7 +32,7 @@ import retrofit2.Response;
 public class DirectionActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
 
-    private String API_KEY = "AIzaSyBe9P-itehQgH5BG7ox5vizpv5E1iGLMhg";
+    private String API_KEY = "AIzaSyBmnxW_0T3iwdURYvPPWJ0o2ciHbTTGMBc";
 
     private LatLng pickUpLatLng = new LatLng(-6.175110, 106.865039); // Jakarta
     private LatLng locationLatLng = new LatLng(-6.197301,106.795951); // Cirebon
@@ -74,6 +75,7 @@ public class DirectionActivity extends AppCompatActivity implements OnMapReadyCa
             public void onResponse(Call<ResponseRoute> call, Response<ResponseRoute> response) {
 
                 if (response.isSuccessful()){
+                    Log.e("tagReq", "onResponse: "+response.body().toString());
                     // tampung response ke variable
                     ResponseRoute dataDirection = response.body();
 
