@@ -32,7 +32,7 @@ import retrofit2.Response;
 public class DirectionActivity extends AppCompatActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
 
-    private String API_KEY = getResources().getString(R.string.google_maps_key);
+    private String API_KEY = "";
 
     private LatLng pickUpLatLng = new LatLng(-6.175110, 106.865039); // Jakarta
     private LatLng locationLatLng = new LatLng(-6.197301,106.795951); // Cirebon
