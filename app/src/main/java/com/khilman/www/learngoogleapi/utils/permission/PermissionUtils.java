@@ -1,16 +1,15 @@
-package com.khilman.www.learngoogleapi.utils;
+package com.khilman.www.learngoogleapi.utils.permission;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
+
+import com.khilman.www.learngoogleapi.utils.LogHelper;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Septian Adi Wijaya on 27/11/2020.
@@ -23,6 +22,18 @@ public class PermissionUtils {
 
     private static final String TAG = PermissionUtils.class.getSimpleName();
 
+    /**
+     * make it 1 way to check for permission then give the result to user class
+     * is it permitted or not.
+     *
+     * when it isn't permitted yet, dialog asking permission shown (always). IF it denied all then returning false
+     * when it already permitted (all), returning true to continue to next flow
+     * when it only permitted partially, returning false & re-asking for permission which already denied, till it permitted
+     *
+     * @param context
+     * @param permissions
+     * @return
+     */
     public static boolean checkPermissions(Context context, String[] permissions) {
 
         // Always return true for SDK < M, let the system deal with the permissions

@@ -1,10 +1,6 @@
 package com.khilman.www.learngoogleapi;
 
 import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +8,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.khilman.www.learngoogleapi.utils.NavigationUtils;
-import com.khilman.www.learngoogleapi.utils.PermissionUtils;
+import com.khilman.www.learngoogleapi.utils.permission.PermissionUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
