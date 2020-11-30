@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.khilman.www.learngoogleapi.utils.LogHelper;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Septian Adi Wijaya on 27/11/2020.
@@ -23,9 +26,9 @@ public class PermissionUtils {
     private static final String TAG = PermissionUtils.class.getSimpleName();
 
     /**
-     * make it 1 way to check for permission then give the result to user class
+     * make it 1 way to check for permission then give the result to user class directly
      * is it permitted or not.
-     *
+     * <p>
      * when it isn't permitted yet, dialog asking permission shown (always). IF it denied all then returning false
      * when it already permitted (all), returning true to continue to next flow
      * when it only permitted partially, returning false & re-asking for permission which already denied, till it permitted
@@ -36,6 +39,8 @@ public class PermissionUtils {
      */
     public static boolean checkPermissions(Context context, String[] permissions) {
 
+        LogHelper.e(TAG, Arrays.deepToString(permissions));
+
         // Always return true for SDK < M, let the system deal with the permissions
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             LogHelper.e(TAG, "API version < M, returning true by default");
@@ -44,34 +49,41 @@ public class PermissionUtils {
         }
 
         //construct data permissions
-        //<permission name, PERMISSION_DENIED or PERMISSION_GRANTED>
-        HashMap<String, Integer> hPermissions = new HashMap<>();
-        for (String perm : permissions) {
-            hPermissions.put(perm, PackageManager.PERMISSION_DENIED);
-        }
-
+        List<String> needPermission = new ArrayList<>();
 
         if (context == null)
             throw new RuntimeException("Can't check permission on null context");
 
         for (String perm : permissions) {
+
+            //check is permission which asked is permitted or not
             if (ContextCompat.checkSelfPermission(context, perm) != PackageManager.PERMISSION_GRANTED)
-                requestPermissions(context, perm, hPermissions);
+                needPermission.add(perm);
         }
 
-        return true;
+        //when needPermission empty, mean all permissions already GRANTED
+        if (ObjPermissionUtils.isEmpty(needPermission))
+            return true;
+        else {
+            return requestPermissions(context, needPermission);
+        }
     }
 
-    private static synchronized void requestPermissions(Context context, String permission, HashMap<String, Integer> hPermissions) {
-//        if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
-//            Toast.makeText(context, "Membutuhkan Izin " + permission, Toast.LENGTH_SHORT).show();
-//        } else {
+    //requesting permissions
+    private static synchronized boolean requestPermissions(Context context, List<String> lPermissions) {
 
-            // No explanation needed; request the permission
-            ActivityCompat.requestPermissions((Activity) context,
-                    new String[]{permission},
-                    1);
-//        }
+        for (String perm : lPermissions) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, perm)) {
+                LogHelper.e(TAG, perm);
+            }
+        }
+
+        ActivityCompat.requestPermissions((Activity) context
+                , lPermissions.toArray(new String[lPermissions.size() - 1])
+                , 1);
+
+        return false;
     }
 
 

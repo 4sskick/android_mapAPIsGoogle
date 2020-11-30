@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.khilman.www.learngoogleapi.BuildConfig;
 
+import java.util.Arrays;
+
 /**
  * Created by Septian Adi Wijaya on 27/11/2020.
  * please be sure to add credential if you use people's code
@@ -26,7 +28,7 @@ public class LogHelper {
 
     public static void e(String tag, Object... messages) {
         if (LOGGING_ENABLED)
-            Log.e(tag, getClassNameMethodNameAndLineNumber() + ", " + messages);
+            Log.e(tag, getClassNameMethodNameAndLineNumber() + ", " + Arrays.deepToString(messages));
     }
 
     /**
