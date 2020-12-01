@@ -36,27 +36,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnDirection = (Button) findViewById(R.id.btn_direction);
         btnOjek = (Button) findViewById(R.id.btn_ojek);
 
-        // Here, thisActivity is the current activity
-//        if (ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            // Permission is not granted
-////            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-////                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-////                Toast.makeText(this, "Membutuhkan Izin Lokasi", Toast.LENGTH_SHORT).show();
-////            } else {
-////
-////                // No explanation needed; request the permission
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-//                    1);
-////            }
-//        } else {
-//            // Permission has already been granted
-//            Toast.makeText(this, "Izin Lokasi diberikan", Toast.LENGTH_SHORT).show();
-//        }
-
         btnPlacePicker.setOnClickListener(this);
         btnDirection.setOnClickListener(this);
         btnOjek.setOnClickListener(this);
@@ -69,9 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (PermissionUtils.checkPermissions(this, new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION
-//                        , Manifest.permission.ACCESS_COARSE_LOCATION
-                        , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        , Manifest.permission.CAMERA
+                        , Manifest.permission.ACCESS_COARSE_LOCATION
                 }))
                     NavigationUtils.directToPlacePicker(this);
                 break;
