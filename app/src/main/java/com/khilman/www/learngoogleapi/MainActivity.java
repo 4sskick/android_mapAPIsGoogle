@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +16,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.khilman.www.learngoogleapi.base.BaseView;
 import com.khilman.www.learngoogleapi.utils.LogHelper;
 import com.khilman.www.learngoogleapi.utils.NavigationUtils;
 import com.khilman.www.learngoogleapi.utils.permission.PermissionUtils;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseView implements View.OnClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -28,34 +30,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnOjek;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected int parentLayout() {
+        return 0;
+    }
+
+    @Override
+    protected int contentLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initComponents(@Nullable Bundle savedInstanceState) {
 
         btnPlacePicker = (Button) findViewById(R.id.btn_placePicker);
         btnDirection = (Button) findViewById(R.id.btn_direction);
         btnOjek = (Button) findViewById(R.id.btn_ojek);
-
-        // Here, thisActivity is the current activity
-//        if (ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            // Permission is not granted
-////            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-////                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-////                Toast.makeText(this, "Membutuhkan Izin Lokasi", Toast.LENGTH_SHORT).show();
-////            } else {
-////
-////                // No explanation needed; request the permission
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
-//                    1);
-////            }
-//        } else {
-//            // Permission has already been granted
-//            Toast.makeText(this, "Izin Lokasi diberikan", Toast.LENGTH_SHORT).show();
-//        }
 
         btnPlacePicker.setOnClickListener(this);
         btnDirection.setOnClickListener(this);
@@ -69,17 +58,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (PermissionUtils.checkPermissions(this, new String[]{
                         Manifest.permission.ACCESS_FINE_LOCATION
-//                        , Manifest.permission.ACCESS_COARSE_LOCATION
-                        , Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        , Manifest.permission.CAMERA
+                        , Manifest.permission.ACCESS_COARSE_LOCATION
                 }))
                     NavigationUtils.directToPlacePicker(this);
                 break;
             case R.id.btn_direction:
-                NavigationUtils.directToDirection(this);
+
+                if (PermissionUtils.checkPermissions(this, new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                        , Manifest.permission.ACCESS_COARSE_LOCATION
+                }))
+                    NavigationUtils.directToDirection(this);
                 break;
             case R.id.btn_ojek:
-                NavigationUtils.directToOjek(this);
+
+                if (PermissionUtils.checkPermissions(this, new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                        , Manifest.permission.ACCESS_COARSE_LOCATION
+                }))
+                    NavigationUtils.directToOjek(this);
                 break;
         }
     }
